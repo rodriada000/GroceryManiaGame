@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://ItemSpawner.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Shelf.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Main.gd" type="Script" id=4]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=5]
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 174, 193 )
+
+[node name="ItemSpawner" parent="." instance=ExtResource( 1 )]
+position = Vector2( 91, 72 )
+
+[node name="Shelf" parent="." instance=ExtResource( 3 )]
+position = Vector2( 992, 257 )
+rotation = -1.5708
+
+[node name="Shelf2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 992, 390 )
+rotation = -1.5708
+
+[node name="Shelf3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 923, 33 )
+rotation = -3.14159
+category = "Meats"
+
+[node name="Shelf4" parent="." instance=ExtResource( 3 )]
+position = Vector2( 790, 33 )
+rotation = -3.14159
+category = "Meats"
+
+[node name="Shelf5" parent="." instance=ExtResource( 3 )]
+position = Vector2( 719, 258 )
+rotation = 1.5708
+category = "Beer"
+
+[node name="Shelf6" parent="." instance=ExtResource( 3 )]
+position = Vector2( 719, 391 )
+rotation = 1.5708
+category = "Beer"
+
+[node name="Shelf7" parent="." instance=ExtResource( 3 )]
+position = Vector2( 652, 258 )
+rotation = -1.5708
+category = "Cans"
+
+[node name="Shelf8" parent="." instance=ExtResource( 3 )]
+position = Vector2( 652, 391 )
+rotation = -1.5708
+category = "Cans"
+
+[node name="HUD" parent="." instance=ExtResource( 5 )]
+
+[connection signal="collected" from="Player" to="." method="_on_Player_collected"]
+[connection signal="collected" from="Player" to="ItemSpawner" method="_on_Player_collected"]
