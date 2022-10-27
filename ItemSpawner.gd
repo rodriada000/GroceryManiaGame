@@ -36,4 +36,5 @@ func _on_Timer_timeout():
 
 
 func _on_Player_collected(points):
-	spawn_count -= 1
+	if points > 0:
+		spawn_count -= 1

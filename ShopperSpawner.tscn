@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Shopper.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ShopperSpawner.gd" type="Script" id=2]
+[ext_resource path="res://ShopperPath.tscn" type="PackedScene" id=3]
+
+[node name="ShopperSpawner" type="Node2D"]
+script = ExtResource( 2 )
+shopper_scene = ExtResource( 1 )
+path_scene = ExtResource( 3 )
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_SpawnTimer_timeout"]

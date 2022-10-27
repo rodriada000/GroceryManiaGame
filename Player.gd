@@ -11,6 +11,8 @@ var item_ref = null
 var item_held = null
 var velocity = Vector2()
 
+var wrap_offset = 48
+
 func _input(event):
 	if event.is_action_pressed("pickup"):
 		pickup_or_drop_item()
@@ -39,11 +41,16 @@ func drop_item():
 	holding_item = false
 	var touching_areas = $Area2D.get_overlapping_areas()
 	for a in touching_areas:
-		if a.is_in_group("ShelfRange") and a.get_parent().category == item_held.category:
-			emit_signal("collected", item_held.points)
-			item_held.queue_free()
-			item_held = null
-			return
+		if a.is_in_group("ShelfRange"):
+			if a.get_parent().category == item_held.category:
+				emit_signal("collected", item_held.points)
+				item_held.queue_free()
+				item_held = null
+				return
+			else:
+				# wrong shelf, lose points
+				emit_signal("collected", -10)
+				break
 	
 	item_held.can_pickup = true
 	item_held = null
@@ -70,10 +77,8 @@ func _process(delta):
 		$AnimatedSprite.animation = "run" if !holding_item else "run_holding"
 	else:
 		$AnimatedSprite.animation = "idle" if !holding_item else "idle_holding"
-	
-	position += velocity * delta
-	position.x = clamp(position.x, 0, screen_size.x)
-	position.y = clamp(position.y, 0, screen_size.y)
+		
+	move_player(delta)
 		
 	if velocity.x != 0:
 		$AnimatedSprite.flip_h = velocity.x < 0
@@ -87,3 +92,17 @@ func _process(delta):
 func _physics_process(_delta):
 	velocity = move_and_slide(velocity, Vector2(0, -1))
 
+func move_player(delta):
+	position += velocity * delta
+	position.x = clamp(position.x, -1 * wrap_offset, screen_size.x + wrap_offset)
+	position.y = clamp(position.y, -1 * wrap_offset, screen_size.y + wrap_offset)
+	
+	if position.x >= screen_size.x + wrap_offset:
+		position.x = 0 - wrap_offset
+	elif position.x <= 0 - wrap_offset:
+		position.x = screen_size.x + wrap_offset
+		
+	if position.y >= screen_size.y + wrap_offset:
+		position.y = 0 - wrap_offset
+	elif position.y <= 0 - wrap_offset:
+		position.y = screen_size.y + wrap_offset

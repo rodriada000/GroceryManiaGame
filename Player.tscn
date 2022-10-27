@@ -103,6 +103,7 @@ scale = Vector2( 1.75, 1.75 )
 z_index = 1
 frames = SubResource( 7 )
 animation = "run"
+frame = 3
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -114,6 +115,3 @@ shape = SubResource( 8 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 6, -6.5 )
 shape = SubResource( 21 )
-
-[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
-[connection signal="area_exited" from="Area2D" to="." method="_on_Area2D_area_exited"]
