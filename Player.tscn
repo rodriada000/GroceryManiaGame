@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://art/idle.png" type="Texture" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
@@ -95,6 +95,9 @@ extents = Vector2( 25.5, 51.5 )
 [sub_resource type="RectangleShape2D" id=21]
 extents = Vector2( 37, 32.5 )
 
+[sub_resource type="RectangleShape2D" id=22]
+extents = Vector2( 23.5, 48 )
+
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 2 )
 
@@ -103,15 +106,20 @@ scale = Vector2( 1.75, 1.75 )
 z_index = 1
 frames = SubResource( 7 )
 animation = "run"
-frame = 3
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -5, 2.5 )
 shape = SubResource( 8 )
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="InteractArea" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="InteractCollision" type="CollisionShape2D" parent="InteractArea"]
 position = Vector2( 6, -6.5 )
 shape = SubResource( 21 )
+
+[node name="SlipArea" type="Area2D" parent="."]
+
+[node name="SlipCollision" type="CollisionShape2D" parent="SlipArea"]
+position = Vector2( -5.5, 6 )
+shape = SubResource( 22 )

@@ -1,11 +1,12 @@
 extends Node2D
 
+signal spawned()
+
 export(PackedScene) var item_scene
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-export var max_spawn = 5
+export var max_spawn = 5 # max allowed spawned at a time
 var spawn_count = 0
+
+var items_left = 15 # num of items to spawn
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -19,10 +20,11 @@ func _ready():
 
 func _on_Timer_timeout():
 	# Create a new instance of the Mob scene.
-	if spawn_count >= max_spawn:
+	if spawn_count >= max_spawn or items_left <= 0:
 		return
 	
 	spawn_count += 1
+	items_left -= 1
 	
 	var mob = item_scene.instance()
 
@@ -33,6 +35,7 @@ func _on_Timer_timeout():
 	
 	# Spawn the mob by adding it to the Main scene.
 	get_tree().get_root().add_child(mob)
+	emit_signal("spawned")
 
 
 func _on_Player_collected(points):

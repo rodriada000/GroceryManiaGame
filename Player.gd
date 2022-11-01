@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+signal hit()
 signal collected(points)
 # Declare member variables here. Examples:
 # var a = 2
@@ -27,7 +28,7 @@ func pickup_or_drop_item():
 func pickup_item():
 	if holding_item: return
 	
-	var touching_areas = $Area2D.get_overlapping_areas()
+	var touching_areas = $InteractArea.get_overlapping_areas()
 	for i in touching_areas:
 		if i is Item and i.can_pickup:
 			item_held = i
@@ -39,7 +40,7 @@ func drop_item():
 	if !holding_item: return
 	
 	holding_item = false
-	var touching_areas = $Area2D.get_overlapping_areas()
+	var touching_areas = $InteractArea.get_overlapping_areas()
 	for a in touching_areas:
 		if a.is_in_group("ShelfRange"):
 			if a.get_parent().category == item_held.category:
@@ -91,6 +92,16 @@ func _process(delta):
 
 func _physics_process(_delta):
 	velocity = move_and_slide(velocity, Vector2(0, -1))
+	var colly = get_last_slide_collision()
+	if colly != null and colly.collider.is_in_group('Shopper'):
+		# lose life because of collision
+		hide() # Player disappears after being hit.
+		emit_signal("hit")
+	
+func start(pos):
+	position = pos
+	show()
+
 
 func move_player(delta):
 	position += velocity * delta
