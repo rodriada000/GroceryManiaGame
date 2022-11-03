@@ -8,12 +8,13 @@ var score = 0
 var multiplier = 0
 var lives = 3
 
+func _input(event):
+	if event.is_action_pressed("restart") and lives < 0:
+		new_game()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	randomize()
-	$HUD.update_score(score)
-	$HUD.update_lives(lives)
-	$HUD.update_items($ItemSpawner.items_left)
 	new_game()
 
 
@@ -21,6 +22,10 @@ func _ready():
 #func _process(delta):
 #	pass
 
+
+func _on_Spill_Cleaned():
+	score += 50
+	$HUD.update_score(score)
 
 func _on_Player_collected(points):
 	if multiplier > 0:
@@ -40,16 +45,22 @@ func new_game():
 	score = 0
 	lives = 3
 	multiplier = 0
+	$ItemSpawner.reset()
+	$SpillSpawner.reset()
+	$ShopperPath.reset()
+	$HUD.update_score(score)
+	$HUD.update_lives(lives)
+	$HUD.update_items($ItemSpawner.items_left)
 	$Player.start($StartPosition.position)
+	$Broom.position = $BroomPosition.position
 
 func _on_Player_hit():
 	lives -= 1
+	$HUD.update_lives(lives)
 	
 	if lives < 0:
-		pass # game over!
+		return # game over!
 		
-	print(lives)
-	$HUD.update_lives(lives)
 	$Player.start($StartPosition.position)
 
 

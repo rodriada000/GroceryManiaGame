@@ -1,14 +1,8 @@
-extends Area2D
+extends Interactable
 class_name Item
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-export var can_pickup = true
 var category = ""
 var points = 25
-var offset_x = 36
-var offset_y = -8
 
 var items = {
 	'chicken' : { 'path': 'res://art/chicken.png', 'category': 'Meats'},
@@ -22,6 +16,9 @@ var item_names = items.keys()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	offset_x = 36
+	offset_y = -8
+	
 	var i = items[item_names[randi() % item_names.size()]]
 	$Sprite.texture = load(i['path'])
 	category = i['category']

@@ -106,6 +106,7 @@ scale = Vector2( 1.75, 1.75 )
 z_index = 1
 frames = SubResource( 7 )
 animation = "run"
+frame = 2
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -123,3 +124,24 @@ shape = SubResource( 21 )
 [node name="SlipCollision" type="CollisionShape2D" parent="SlipArea"]
 position = Vector2( -5.5, 6 )
 shape = SubResource( 22 )
+
+[node name="StunTimer" type="Timer" parent="."]
+one_shot = true
+__meta__ = {
+"_editor_description_": "sets is_stunned to false after wait_time"
+}
+
+[node name="StunSafeTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+__meta__ = {
+"_editor_description_": "amount of time before you can be stunned again"
+}
+
+[node name="Tween" type="Tween" parent="."]
+repeat = true
+playback/repeat = true
+
+[connection signal="area_entered" from="SlipArea" to="." method="_on_SlipArea_area_entered"]
+[connection signal="timeout" from="StunTimer" to="." method="_on_StunTimer_timeout"]
+[connection signal="timeout" from="StunSafeTimer" to="." method="_on_StunSafeTimer_timeout"]

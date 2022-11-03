@@ -10,6 +10,12 @@ export var max_delay = 6
 func _ready():
 	$SpawnTimer.wait_time = rand_range(min_delay, max_delay)
 
+func reset():
+	for n in get_children():
+		if n != $SpawnTimer:
+			remove_child(n)
+			n.queue_free()
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

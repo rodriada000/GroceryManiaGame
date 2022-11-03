@@ -17,7 +17,14 @@ func _ready():
 #func _process(delta):
 #	pass
 
-
+func reset():
+	items_left = 15
+	spawn_count = 0
+	for n in get_tree().get_root().get_children():
+		if n is Item:
+			get_tree().get_root().remove_child(n)
+			n.queue_free()
+		
 func _on_Timer_timeout():
 	# Create a new instance of the Mob scene.
 	if spawn_count >= max_spawn or items_left <= 0:
